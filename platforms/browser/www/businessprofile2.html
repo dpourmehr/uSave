@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+
+
+
+<html>
+
+<head>Business Profile
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+
+      <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <script type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="css/style4.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="./css/style2.css">
+  <script>
+  var bid = null;
+  function loadContent() {
+    $.ajax({
+      url: 'http://dealsdowntheblock.000webhostapp.com/getBid.php',
+      data: {
+        username: localStorage.getItem('username')
+      },
+      error: function(data) {
+       console.log(data);
+      },
+      dataType: 'json',
+      success: function(business) {
+        bid = business[0].businessid;
+        $.ajax({
+          url: 'http://dealsdowntheblock.000webhostapp.com/retrievedata.php',
+          data: {
+            businessid: bid
+          },
+          error: function(data) {
+           console.log(data);
+          },
+          dataType: 'json',
+          success: function(business) {
+             document.getElementById('input-business-name').value = business[0].businessname;
+             document.getElementById('input-business-phone').value = business[0].PhoneNumber;
+             document.getElementById('input-business-email').value = business[0].Email;
+             document.getElementById('input-business-address').value = business[0].Address;
+             document.getElementById('input-business-description').value = business[0].Descriptions;
+
+          },
+          type: 'POST'
+        });
+      },
+      type: 'POST'
+    });
+  }
+
+  function changePromo1() {
+    if (document.getElementById('input-promo1').disabled == true) {
+      document.getElementById('button-business-promo1').text = "DONE";
+      document.getElementById("button-business-promo1").style.backgroundColor = "red";
+      document.getElementById('input-promo1').disabled = false;
+    } else {
+      document.getElementById('button-business-promo1').text = "Edit Promo 1";
+      document.getElementById("button-business-promo1").style.backgroundColor = "#179012";
+      document.getElementById('input-promo1').disabled = true;
+      updatePromos();
+    }
+  }
+
+  function changePromo2() {
+    if (document.getElementById('input-promo2').disabled == true) {
+      document.getElementById('button-business-promo2').text = "DONE";
+      document.getElementById("button-business-promo2").style.backgroundColor = "red";
+      document.getElementById('input-promo2').disabled = false;
+    } else {
+      document.getElementById('button-business-promo2').text = "Edit Promo 2";
+      document.getElementById("button-business-promo2").style.backgroundColor = "#179012";
+      document.getElementById('input-promo2').disabled = true;
+      updatePromos();
+    }
+  }
+
+  function changePromo3() {
+        if (document.getElementById('input-promo3').disabled == true) {
+          document.getElementById('button-business-promo3').text = "DONE";
+          document.getElementById("button-business-promo3").style.backgroundColor = "red";
+      document.getElementById('input-promo3').disabled = false;
+    } else {
+      document.getElementById('button-business-promo3').text = "Edit Promo 3";
+      document.getElementById("button-business-promo3").style.backgroundColor = "#179012";
+      document.getElementById('input-promo3').disabled = true;
+      updatePromos();
+    }
+  }
+
+  function changeType() {
+    if (document.getElementById('input-business-type').disabled == true) {
+      document.getElementById('button-business-type').text = "DONE";
+      document.getElementById("button-business-type").style.backgroundColor = "red";
+      document.getElementById('input-business-type').disabled = false;
+    } else {
+      document.getElementById('button-business-type').text = "Edit Type";
+      document.getElementById("button-business-type").style.backgroundColor = "#179012";
+      document.getElementById('input-business-type').disabled = true;
+      updateDatabase();
+    }
+  }
+
+  function changeDescription() {
+    if (document.getElementById('input-business-description').disabled == true) {
+      document.getElementById('button-business-description').text = "DONE";
+      document.getElementById("button-business-description").style.backgroundColor = "red";
+      document.getElementById('input-business-description').disabled = false;
+    } else {
+      document.getElementById('button-business-description').text = "Edit Description";
+      document.getElementById("button-business-description").style.backgroundColor = "#179012";
+      document.getElementById('input-business-description').disabled = true;
+      updateDatabase();
+    }
+  }
+
+  function changeName() {
+    if (document.getElementById('input-business-name').disabled == true) {
+      document.getElementById('button-business-name').text = "DONE";
+      document.getElementById("button-business-name").style.backgroundColor = "red";
+      document.getElementById('input-business-name').disabled = false;
+    } else {
+      document.getElementById('button-business-name').text = "Edit Name";
+      document.getElementById("button-business-name").style.backgroundColor = "#179012";
+      document.getElementById('input-business-name').disabled = true;
+      updateDatabase();
+    }
+  }
+
+  function changePhone() {
+    if (document.getElementById('input-business-phone').disabled == true) {
+      document.getElementById('button-business-phone').text = "DONE";
+      document.getElementById("button-business-phone").style.backgroundColor = "red";
+      document.getElementById('input-business-phone').disabled = false;
+    } else {
+      document.getElementById('button-business-phone').text = "Edit Phone";
+      document.getElementById("button-business-phone").style.backgroundColor = "#179012";
+      document.getElementById('input-business-phone').disabled = true;
+      updateDatabase();
+    }
+  }
+
+  function changeEmail() {
+    if (document.getElementById('input-business-email').disabled == true) {
+      document.getElementById('button-business-email').text = "DONE";
+      document.getElementById("button-business-email").style.backgroundColor = "red";
+      document.getElementById('input-business-email').disabled = false;
+    } else {
+      document.getElementById('button-business-email').text = "Edit Email";
+      document.getElementById("button-business-email").style.backgroundColor = "#179012";
+      document.getElementById('input-business-email').disabled = true;
+      updateDatabase();
+    }
+  }
+
+  function changeAddress() {
+    if (document.getElementById('input-business-address').disabled == true) {
+      document.getElementById('button-business-address').text = "DONE";
+      document.getElementById("button-business-address").style.backgroundColor = "red";
+      document.getElementById('input-business-address').disabled = false;
+    } else {
+      document.getElementById('button-business-address').text = "Edit Address";
+      document.getElementById("button-business-address").style.backgroundColor = "#179012";
+      document.getElementById('input-business-address').disabled = true;
+      updateDatabase();
+    }
+  }
+
+  function updateDatabase() {
+    $.ajax({
+      url: 'http://dealsdowntheblock.000webhostapp.com/edit.php',
+      data: {
+        businessid: bid,
+        new_businessname: document.getElementById('input-business-name').value,
+        new_businesstype: document.getElementById('input-business-type').value,
+        new_address: document.getElementById('input-business-address').value,
+        new_phone: document.getElementById('input-business-phone').value,
+        new_email: document.getElementById('input-business-email').value,
+        new_description: document.getElementById('input-business-description').value
+      },
+      error: function(data) {
+       console.log(data);
+      },
+      dataType: 'json',
+      success: function(business) {
+      },
+      type: 'POST'
+    });
+   }
+
+  function updatePromos() {
+    $.ajax({
+      url: 'http://dealsdowntheblock.000webhostapp.com/updatedeals.php',
+      data: {
+        bid: bid,
+        promo1: document.getElementById('input-promo1').value,
+        promo2: document.getElementById('input-promo2').value,
+        promo3: document.getElementById('input-promo3').value
+      },
+      error: function(data) {
+       console.log(data);
+      },
+      dataType: 'json',
+      success: function(business) {
+        console.log(business);
+      },
+      type: 'POST'
+    });
+   }
+  </script>
+
+
+<title id="title"><b>Business Profile</b></title>
+
+</head>
+
+
+<body onload="loadContent()">
+<div id="header-block">
+
+      <p id="header-title" style="font-family: 'Open Sans'; text-align: center; line-height: 70px; vertical-align: middle;font-weight: 500; color: white;">Business Profile</p>
+ <div id="wrapper">
+    <div class="overlay"></div>
+
+    <!-- Sidebar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+        <ul class="nav sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="bdash.php">
+                  My Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="bdash.php">Home</a>
+            </li>
+            <li>
+                <a href="#">Edit Profile</a>
+            </li>
+            <li>
+                <a href="#">Team</a>
+            </li>
+            <br>
+            <br>
+            <br>
+            <br>
+            <li>
+                <a href="#">Settings</a>
+            </li>
+            <li>
+                <a href="#">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <button type="button" class="hamburger is-closed" data-toggle="offcanvas">
+            <span class="hamb-top"></span>
+      <span class="hamb-middle"></span>
+    <span class="hamb-bottom"></span>
+        </button>
+    </div>
+    <!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->
+<style>
+body {
+    position: relative;
+    overflow-x: hidden;
+
+      background: #fff;
+    /*background: radial-gradient(#e8e8e8,#66b266);*/
+    border-radius: 6px;
+    height: 120px;
+
+
+}
+body,
+html { height: 100%;}
+.nav .open > a,
+.nav .open > a:hover,
+.nav .open > a:focus {background-color: transparent;}
+
+/*-------------------------------*/
+/*           Wrappers            */
+/*-------------------------------*/
+
+#wrapper {
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+    padding-left: 220px;
+}
+
+#sidebar-wrapper {
+    z-index: 1000;
+    left: 220px;
+    width: 0;
+    height: 100%;
+    margin-left: -220px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #1a1a1a;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#sidebar-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 220px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    padding-top: 70px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -220px;
+}
+
+/*-------------------------------*/
+/*     Sidebar nav styles        */
+/*-------------------------------*/
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 220px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    position: relative;
+    line-height: 20px;
+    display: inline-block;
+    width: 100%;
+}
+
+.sidebar-nav li:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    height: 100%;
+    width: 3px;
+    background-color: #1c1c1c;
+    -webkit-transition: width .2s ease-in;
+      -moz-transition:  width .2s ease-in;
+       -ms-transition:  width .2s ease-in;
+            transition: width .2s ease-in;
+
+}
+.sidebar-nav li:first-child a {
+    color: #fff;
+    background-color: #1a1a1a;
+}
+.sidebar-nav li:nth-child(2):before {
+    background-color: #ec1b5a;
+}
+.sidebar-nav li:nth-child(3):before {
+    background-color: #79aefe;
+}
+.sidebar-nav li:nth-child(4):before {
+    background-color: #314190;
+}
+.sidebar-nav li:nth-child(5):before {
+    background-color: #279636;
+}
+.sidebar-nav li:nth-child(6):before {
+    background-color: #7d5d81;
+}
+.sidebar-nav li:nth-child(7):before {
+    background-color: #ead24c;
+}
+.sidebar-nav li:nth-child(8):before {
+    background-color: #2d2366;
+}
+.sidebar-nav li:nth-child(9):before {
+    background-color: #35acdf;
+}
+.sidebar-nav li:hover:before,
+.sidebar-nav li.open:hover:before {
+    width: 100%;
+    -webkit-transition: width .2s ease-in;
+      -moz-transition:  width .2s ease-in;
+       -ms-transition:  width .2s ease-in;
+            transition: width .2s ease-in;
+
+}
+
+.sidebar-nav li a {
+    display: block;
+    color: #ddd;
+    text-decoration: none;
+    padding: 10px 15px 10px 30px;
+}
+
+.sidebar-nav li a:hover,
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus,
+.sidebar-nav li.open a:hover,
+.sidebar-nav li.open a:active,
+.sidebar-nav li.open a:focus{
+    color: #fff;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 20px;
+    line-height: 44px;
+}
+.sidebar-nav .dropdown-menu {
+    position: relative;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    border: none;
+    background-color: #222;
+    box-shadow: none;
+}
+
+/*-------------------------------*/
+/*       Hamburger-Cross         */
+/*-------------------------------*/
+
+.hamburger {
+  position: fixed;
+  top: 20px;
+  z-index: 999;
+  display: block;
+  width: 32px;
+  height: 32px;
+  margin-left: 0px;
+  background: transparent;
+  border: none;
+}
+.hamburger:hover,
+.hamburger:focus,
+.hamburger:active {
+  outline: none;
+}
+.hamburger.is-closed:before {
+  content: '';
+  display: block;
+  width: 100px;
+  font-size: 14px;
+  color: #fff;
+  line-height: 32px;
+  text-align: center;
+  opacity: 0;
+  -webkit-transform: translate3d(0,0,0);
+  -webkit-transition: all .35s ease-in-out;
+}
+.hamburger.is-closed:hover:before {
+  opacity: 1;
+  display: block;
+  -webkit-transform: translate3d(-100px,0,0);
+  -webkit-transition: all .35s ease-in-out;
+}
+
+.hamburger.is-closed .hamb-top,
+.hamburger.is-closed .hamb-middle,
+.hamburger.is-closed .hamb-bottom,
+.hamburger.is-open .hamb-top,
+.hamburger.is-open .hamb-middle,
+.hamburger.is-open .hamb-bottom {
+  position: absolute;
+  left: 0;
+  height: 4px;
+  width: 100%;
+}
+.hamburger.is-closed .hamb-top,
+.hamburger.is-closed .hamb-middle,
+.hamburger.is-closed .hamb-bottom {
+  background-color: #1a1a1a;
+}
+.hamburger.is-closed .hamb-top {
+  top: 5px;
+  -webkit-transition: all .35s ease-in-out;
+}
+.hamburger.is-closed .hamb-middle {
+  top: 50%;
+  margin-top: -2px;
+}
+.hamburger.is-closed .hamb-bottom {
+  bottom: 5px;
+  -webkit-transition: all .35s ease-in-out;
+}
+
+.hamburger.is-closed:hover .hamb-top {
+  top: 0;
+  -webkit-transition: all .35s ease-in-out;
+}
+.hamburger.is-closed:hover .hamb-bottom {
+  bottom: 0;
+  -webkit-transition: all .35s ease-in-out;
+}
+.hamburger.is-open .hamb-top,
+.hamburger.is-open .hamb-middle,
+.hamburger.is-open .hamb-bottom {
+  background-color: #1a1a1a;
+}
+.hamburger.is-open .hamb-top,
+.hamburger.is-open .hamb-bottom {
+  top: 50%;
+  margin-top: -2px;
+}
+.hamburger.is-open .hamb-top {
+  -webkit-transform: rotate(45deg);
+  -webkit-transition: -webkit-transform .2s cubic-bezier(.73,1,.28,.08);
+}
+.hamburger.is-open .hamb-middle { display: none; }
+.hamburger.is-open .hamb-bottom {
+  -webkit-transform: rotate(-45deg);
+  -webkit-transition: -webkit-transform .2s cubic-bezier(.73,1,.28,.08);
+}
+.hamburger.is-open:before {
+  content: '';
+  display: block;
+  width: 100px;
+  font-size: 14px;
+  color: #fff;
+  line-height: 32px;
+  text-align: center;
+  opacity: 0;
+  -webkit-transform: translate3d(0,0,0);
+  -webkit-transition: all .35s ease-in-out;
+}
+.hamburger.is-open:hover:before {
+  opacity: 1;
+  display: block;
+  -webkit-transform: translate3d(-100px,0,0);
+  -webkit-transition: all .35s ease-in-out;
+}
+
+/*-------------------------------*/
+/*            Overlay            */
+/*-------------------------------*/
+
+.overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(250,250,250,.8);
+    z-index: 1;
+}
+</style>
+<script>
+$(document).ready(function () {
+var trigger = $('.hamburger'),
+    overlay = $('.overlay'),
+   isClosed = false;
+
+  trigger.click(function () {
+    hamburger_cross();
+  });
+
+  function hamburger_cross() {
+
+    if (isClosed == true) {
+      overlay.hide();
+      trigger.removeClass('is-open');
+      trigger.addClass('is-closed');
+      isClosed = false;
+    } else {
+      overlay.show();
+      trigger.removeClass('is-closed');
+      trigger.addClass('is-open');
+      isClosed = true;
+    }
+}
+
+$('[data-toggle="offcanvas"]').click(function () {
+      $('#wrapper').toggleClass('toggled');
+});
+});
+</script>
+    </div>
+    <div class="primaryDash">
+    <div class="promobar">
+      <table style="width:100%;">
+        <tr>
+          <td rowspan="2" style="text-align: center; position: relative; display: inline;">My Promotions</td>
+         
+        </tr>
+        <tr>
+         <td rowspan="2"><img src="img/plus.png" style="width:40px;height:40px; float:right;"></td>
+        </tr>
+
+      </table>
+    </div>
+
+  <div class="promo">
+    <div class"promo1">
+      <!-- <img class="img-circle" src="blue.jpg" alt="Mountain View" style="width:70px;height:70px;"> -->
+      <div class"promotext1">
+        <table>
+          <tr>
+            <td rowspan="2">  <img class="img-circle" src="img/blue.jpg" alt="Mountain View" style="width:40px;height:40px;"></td>
+            <td style="font-size:10px;"valign="bottom"><input type="text" id="input-promo1" disabled="true"></td>
+            <td rowspan="2"><a onclick="changePromo1()" class="edit-promo" id="button-business-promo1" style="float:right; margin:20px;">Edit Promo 1</a></td>
+          </tr>
+          <tr>
+            <td style="font-size:10px;"valign="top">SPECIALS</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="promo">
+    <div class"promo1">
+      <!-- <img class="img-circle" src="blue.jpg" alt="Mountain View" style="width:70px;height:70px;"> -->
+      <div class"promotext1">
+        <table>
+          <tr>
+        <td rowspan="2">  <img class="img-circle" src="img/blue.jpg" alt="Mountain View" style="width:40px;height:40px;"></td>
+        <td style="font-size:10px;"valign="bottom"><input type="text" id="input-promo2" disabled="true"></td>
+        <td rowspan="2"><a onclick="changePromo2()" class="edit-promo" id="button-business-promo2" style="float:right; margin:20px;">Edit Promo 2</a></td>
+      </tr>
+      <tr>
+        <td style="font-size:10px;"valign="top">SPECIALS</td>
+      </tr>
+      </table>
+     </div>
+    </div>
+  </div>
+<div class="promo">
+<div class"promo1">
+  <!-- <img class="img-circle" src="blue.jpg" alt="Mountain View" style="width:70px;height:70px;"> -->
+  <div class"promotext1">
+    <table>
+      <tr>
+    <td rowspan="2">  <img class="img-circle" src="img/blue.jpg" alt="Mountain View" style="width:40px;height:40px;"></td>
+    <td style="font-size:10px;"valign="bottom"><input type="text" id="input-promo3" disabled="true"></td>
+    <td rowspan="2"><a onclick="changePromo3()" class="edit-promo" id="button-business-promo3" style="float:right; margin:20px;">Edit Promo 3</a></td>
+  </tr>
+  <tr>
+    <td style="font-size:10px;"valign="top">SPECIALS</td>
+
+  </tr>
+  </table>
+ </div>
+</div>
+</div>
+
+<div class="promo">
+<div class"promo1">
+  <!-- <img class="img-circle" src="blue.jpg" alt="Mountain View" style="width:70px;height:70px;"> -->
+  <div class"promotext1">
+    <table>
+      <tr>
+    <td rowspan="2">  <img class="img-circle" src="img/blue.jpg" alt="Mountain View" style="width:40px;height:40px;"></td>
+    <td style="font-size:10px;"valign="bottom"><input type="text" id="input-business-name" disabled="true"></td>
+    <td rowspan="2"><a onclick="changeName()" class="edit-promo" id="button-business-name" style="float:right; margin:20px;">Edit Name</a></td>
+  </tr>
+  </table>
+ </div>
+</div>
+</div>
+
+<div class="promo">
+<div class"promo1">
+  <!-- <img class="img-circle" src="blue.jpg" alt="Mountain View" style="width:70px;height:70px;"> -->
+  <div class"promotext1">
+    <table>
+      <tr>
+    <td rowspan="2">  <img class="img-circle" src="img/blue.jpg" alt="Mountain View" style="width:40px;height:40px;"></td>
+    <td style="font-size:10px;"valign="bottom"><input type="text" id="input-business-phone" disabled="true"></td>
+    <td rowspan="2"><a onclick="changePhone()" class="edit-promo" id="button-business-phone" style="float:right; margin:20px;">Edit Phone</a></td>
+  </tr>
+  </table>
+ </div>
+</div>
+</div>
+
+<div class="promo">
+<div class"promo1">
+  <!-- <img class="img-circle" src="blue.jpg" alt="Mountain View" style="width:70px;height:70px;"> -->
+  <div class"promotext1">
+    <table>
+      <tr>
+    <td rowspan="2">  <img class="img-circle" src="img/blue.jpg" alt="Mountain View" style="width:40px;height:40px;"></td>
+    <td style="font-size:10px;"valign="bottom"><input type="text" id="input-business-email" disabled="true"></td>
+    <td rowspan="2"><a onclick="changeEmail()" class="edit-promo" id="button-business-email" style="float:right; margin:20px;">Edit Email</a></td>
+  </tr>
+  </table>
+ </div>
+</div>
+</div>
+
+<div class="promo">
+<div class"promo1">
+  <!-- <img class="img-circle" src="blue.jpg" alt="Mountain View" style="width:70px;height:70px;"> -->
+  <div class"promotext1">
+    <table>
+      <tr>
+    <td rowspan="2">  <img class="img-circle" src="img/blue.jpg" alt="Mountain View" style="width:40px;height:40px;"></td>
+    <td style="font-size:10px;"valign="bottom"><input type="text" id="input-business-address" disabled="true"></td>
+    <td rowspan="2"><a onclick="changeAddress()" class="edit-promo" id="button-business-address" style="float:right; margin:20px;">Edit Address</a></td>
+  </tr>
+
+  </table>
+ </div>
+</div>
+</div>
+
+<div class="promo">
+<div class"promo1">
+  <!-- <img class="img-circle" src="blue.jpg" alt="Mountain View" style="width:70px;height:70px;"> -->
+  <div class"promotext1">
+    <table>
+      <tr>
+    <td rowspan="2">  <img class="img-circle" src="img/blue.jpg" alt="Mountain View" style="width:40px;height:40px;"></td>
+    <td style="font-size:10px;"valign="bottom"><input type="text" id="input-business-description" disabled="true"></td>
+    <td rowspan="2"><a onclick="changeDescription()" class="edit-promo" id="button-business-description" style="float:right; margin:20px;">Edit Description</a></td>
+  </tr>
+
+  </table>
+ </div>
+</div>
+</div>
+
+
+<div class="promo">
+<div class"promo1">
+  <!-- <img class="img-circle" src="blue.jpg" alt="Mountain View" style="width:70px;height:70px;"> -->
+  <div class"promotext1">
+    <table>
+      <tr>
+    <td rowspan="2">  <img class="img-circle" src="img/blue.jpg" alt="Mountain View" style="width:40px;height:40px;"></td>
+    <td style="font-size:10px;"valign="bottom"><input type="text" id="input-business-type" disabled="true"></td>
+    <td rowspan="2"><a onclick="changeType()" class="edit-promo" id="button-business-type" style="float:right; margin:20px;">Edit Type</a></td>
+  </tr>
+  </table>
+ </div>
+</div>
+</div>
+
+</div>
+
+
+</body>
+
+</html>
+

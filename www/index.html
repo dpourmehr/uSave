@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+
+
+    <link rel="stylesheet" href="css/style3.css">
+    <title></title>
+    <link rel="stylesheet prefetch" href="//fonts.googleapis.com/css?family=Open+Sans" />
+      <link rel="stylesheet" type="text/css" href="css/style.css">
+
+
+      <script type="text/javascript">
+
+        function myFunction1() {
+          setTimeout(function() {
+            myFunction();
+          }, 1000);
+        }
+
+        function myFunction() {
+          console.log('here');
+          $.ajax({
+              url: 'http://dealsdowntheblock.000webhostapp.com/login.php',
+              data: {
+                  user: document.getElementById('iduser').value,
+                  pass: document.getElementById('idpass').value
+                  //user: document.getElementById("iduser").value,
+                  //pass: document.getElementById("idpass").value
+              },
+              error: function(data) {
+               console.log(data);
+              },
+              dataType: 'json',
+              success: function(data) {
+
+                if(data.length > 0) {
+                  console.log(data);
+                  localStorage.setItem('username', data[0].Username);
+                  localStorage.setItem('userType', data[0].UserType);
+                  window.location.href = (data[0].UserType == 'business') ? "businessprofile2.html" : "dashboard.html";
+                }
+
+
+                  //console.log(data.locations[1].street + ", " + data.locations[1].adminArea5 + ", " + data.locations[1].adminArea3 + " " + data.locations[1].postalCode);
+                  //console.log(data.distance[1]);
+              },
+              type: 'POST'
+          });
+        }
+
+      </script>
+  </head>
+  <body>
+      <div class="login">
+
+      <div class="logo_pos">
+        <img src="assets/LOGO2.png" style="width: 60%; height: 60%">
+      </div>
+      <!--  <div class="login__check"></div> -->
+        <div class="login__form">
+          <div class="login__row">
+            <svg class="login__icon name svg-icon" viewBox="0 0 20 20">
+              <path d="M0,20 a10,8 0 0,1 20,0z M10,0 a4,4 0 0,1 0,8 a4,4 0 0,1 0,-8"></path>
+            </svg>
+            <input type="text" class="login__input name" placeholder="Username" id="iduser">
+          </div>
+          <div class="login__row">
+            <svg class="login__icon pass svg-icon" viewBox="0 0 20 20">
+              <path d="M0,20 20,20 20,8 0,8z M10,13 10,16z M4,8 a6,8 0 0,1 12,0"></path>
+            </svg>
+            <input type="password" class="login__input pass" placeholder="Password" id="idpass">
+          </div>
+          <button onclick="myFunction1();" type="button" class="login__submit">Sign in</button>
+          <p class="login__signup">Don't have an account? &nbsp;<a>Sign up</a></p>
+        </div>
+      </div>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+          <script src="js/index2.js"></script>
+  </body>
+</html>

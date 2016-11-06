@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DashBoard</title>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+      <link rel="stylesheet" type="text/css" href="css/style.css">
+      <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+      <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="https://js.cit.api.here.com/v3/3.0/mapsjs-ui.css" />
+      <script type="text/javascript" src="https://js.cit.api.here.com/v3/3.0/mapsjs-core.js"></script>
+      <script type="text/javascript" src="https://js.cit.api.here.com/v3/3.0/mapsjs-service.js"></script>
+      <script type="text/javascript" src="https://js.cit.api.here.com/v3/3.0/mapsjs-ui.js"></script>
+      <script type="text/javascript" src="https://js.cit.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+          <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9tsA5BeAbLqWNwBWH5MdWGtHXMxIlOkk&callback=initMap">
+    </script>
+    <link rel="stylesheet" type="text/css" href="./css/style2.css">
+
+      <script>
+        var geocoder = null;
+        var bubble;
+        var group2;
+        function initMap() {
+
+          geocoder = new google.maps.Geocoder();
+        }
+        function onError1(error) {
+          alert('Ooops!');
+        }
+        function onSuccess1(result) {
+          var locations = result.response.view[0].result;
+         /*
+          * The styling of the geocoding response on the map is entirely under the developer's control.
+          * A representitive styling can be found the full JS + HTML code of this example
+          * in the functions below:
+          */
+          addLocationsToMap(locations);
+          // ... etc.
+        }
+        function onSuccess2(result) {
+          var locations = result.response.view[0].result;
+         /*
+          * The styling of the geocoding response on the map is entirely under the developer's control.
+          * A representitive styling can be found the full JS + HTML code of this example
+          * in the functions below:
+          */
+          addLocationsToMap2(locations);
+          // ... etc.
+        }
+        function openBubble(position, text){
+         if(!bubble){
+            bubble =  new H.ui.InfoBubble(
+              position,
+              {content: text});
+            ui.addBubble(bubble);
+          } else {
+            bubble.setPosition(position);
+            bubble.setContent(text);
+            bubble.open();
+          }
+        }
+        function addLocationsToMap2(locations){
+          var group = new  H.map.Group(),
+            position,
+            i;
+
+
+
+          // Add a marker for each location found
+          for (i = 0;  i < locations.length; i += 1) {
+            position = {
+              lat: locations[i].location.displayPosition.latitude,
+              lng: locations[i].location.displayPosition.longitude
+            };
+            marker = new H.map.Marker(position);
+            marker.label = locations[i].location.address.label;
+            group.addObject(marker);
+          }
+
+          group.addEventListener('tap', function (evt) {
+            map.setCenter(evt.target.getPosition());
+            openBubble(
+               evt.target.getPosition(), evt.target.label);
+          }, false);
+
+          // Add the locations group to the map
+          map.addObject(group);
+          map.setCenter(group.getBounds().getCenter());
+          map.setZoom(18);
+          //map.zoomTo(group.getBoundingBox());
+        }
+
+        function addLocationsToMap(locations){
+          var group = new  H.map.Group(),
+            position,
+            i;
+
+
+
+          // Add a marker for each location found
+          for (i = 0;  i < locations.length; i += 1) {
+            position = {
+              lat: locations[i].location.displayPosition.latitude,
+              lng: locations[i].location.displayPosition.longitude
+            };
+            marker = new H.map.Marker(position);
+            marker.label = locations[i].location.address.label;
+            group.addObject(marker);
+          }
+
+          group.addEventListener('tap', function (evt) {
+            map.setCenter(evt.target.getPosition());
+            openBubble(
+               evt.target.getPosition(), evt.target.label);
+          }, false);
+
+          // Add the locations group to the map
+          map.addObject(group);
+          map.setCenter(group.getBounds().getCenter());
+                    group2 = group;
+          //map.zoomTo(group.getBoundingBox());
+        }
+
+        var platform = new H.service.Platform({
+          app_id: 'JVePaRzojoCEwmUi7fME',
+          app_code: 'DmGLWZJDU3zejQHSWWn97g',
+          useCIT: true,
+          useHTTPS: true
+        });
+
+        var map = null;
+        var behavior = null;
+        var ui = null;
+        var defaultLayers = null;
+        // Create the default UI components
+                                    //Step 2: initialize a map  - not specificing a location will give a whole world view.
+
+
+        var watchID = null;
+        var pause = false;
+        setTimeout(function(){
+            document.addEventListener("deviceready", onDeviceReady, false);
+        },4000);
+        function onDeviceReady() {
+                                            defaultLayers = platform.createDefaultLayers();
+                                    map = new H.Map(document.getElementById('map'), defaultLayers.normal.map);
+                                    behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+                                    ui = H.ui.UI.createDefault(map, defaultLayers);
+
+          var options = { enableHighAccuracy: true };
+          watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
+            
+        }
+
+        function openBusiness(data) {
+          pause = true;
+          var index = 0;
+          var element = document.getElementById('mainDash');
+          $.ajax({
+                    url: 'http://dealsdowntheblock.000webhostapp.com/retrievedata.php',
+                    data: {
+                      businessid: data
+                    },
+                    error: function(data) {
+                     console.log(data);
+                    },
+                    dataType: 'json',
+                    success: function(business) {
+                      $.ajax({
+                        url: 'http://dealsdowntheblock.000webhostapp.com/dealinfo.php',
+                        data: {
+                          businessid: data
+                        },
+                        error: function() {
+                         console.log(data);
+                        },
+                        dataType: 'json',
+                        success: function(data2) {
+                          var discounts = [];
+                          for(var i = 0; i < data2.length; i++) {
+                            if(data2[index].businessid == data) {
+                              discounts.push(data2[index]['deal description']);
+                            }
+                            index = index + 1;
+                          }
+
+
+                          var address = business[0].Address;
+                          var businessName = business[0].businessname;
+                          var phonenumber = business[0].PhoneNumber;
+                          var email = business[0].Email;
+                          var description = business[0].Descriptions;
+
+                          var geocoder = platform.getGeocodingService(),
+                            geocodingParameters = {
+                              searchText: address,
+                              jsonattributes : 1
+                          };
+
+                          geocoder.geocode(
+                            geocodingParameters,
+                            onSuccess2,
+                            onError1
+                          );
+                          var titleRow = "<div style='background-color: green; color: white; width: 100%; height: 50px; text-align: center;'><h2 style='line-height: 50px; vertical-align: middle;'>" + businessName + "</h2></div>";
+
+                          var element2 = "<div style='background-color: #f2f2f2;' ><table class='business-info-row'><tr><th rowspan='2' style='text-align: left; width: 50px; height: 50px;'><div class='circle-shape' style='border:solid 20px #0081B4;' ></div></th><th style='text-align: center;'>" + discounts[0] + "</th><th> Expires 11/16 </th><th rowspan='2'></th></tr><tr><td></td><td></td></tr></table></div>";
+
+                          var element3 = "<div style='background-color: #fff;' ><table class='business-info-row'><tr><th rowspan='2' style='text-align: left; width: 50px; height: 50px;'><div class='circle-shape' style='border:solid 20px #813F57;'></div></th><th style='text-align: center;'>" + discounts[1] + "</th><th> Expires 11/16 </th><th rowspan='2'></th></tr><tr><td></td><td></td></tr></table></div>";
+
+                          var element4 = "<div style='background-color: #f2f2f2;' ><table class='business-info-row'><tr><th rowspan='2' style='text-align: left; width: 50px; height: 50px;'><div class='circle-shape' style='border:solid 20px #B47000;' ></div></th><th style='text-align: center;'>" + discounts[2] + "</th><th> Expires 11/16 </th><th rowspan='2'></th></tr><tr><td></td><td></td></tr></table></div>";    
+
+                          var descriptionInfo = "<table class='description-info'><tr> <td style='text-align: left; font-size: 8pt;>'>About</td></tr><tr><td>" + description + "</td></tr></table>";
+
+                          var contactInfo = "<table class='contact-info'><tr><td><span class='glyphicon glyphicon-earphone' aria-hidden='true'></span></td><td>" + phonenumber + "</td></tr><tr><td><span class='glyphicon glyphicon-map-marker' aria-hidden='true'></td><td>" + address + "</td></tr><tr><td><span class='glyphicon glyphicon-envelope' aria-hidden='true'></td><td>" + email + "</td></tr></table>"; 
+
+                          var finalElement = titleRow + element2 + element3 + element4 + descriptionInfo + contactInfo;
+
+                          document.getElementById('mainDash').innerHTML = finalElement;     
+                        },
+                        type: 'POST'
+                      });
+                    },
+                    type: 'POST'
+          });
+        }
+
+        function onSuccess(position) {
+                document.getElementById("mainDash").innerHTML = "";
+                $.ajax({
+                    url: 'http://dealsdowntheblock.000webhostapp.com/businessinfo.php',
+                    error: function(data) {
+                     console.log(data);
+                    },
+                    dataType: 'json',
+                    success: function(data2) {
+                        //console.log(data);
+                        if(pause == false) {
+
+                        var index = 0;
+                        for(var i = 0; i < data2.length; i++) {
+                            //console.log(data2[i]);
+                            localStorage.setItem('bid', data2[i].businessid);
+                              //var service = new google.maps.DistanceMatrixService();
+                              $.ajax({
+                                  url: 'https://maps.googleapis.com/maps/api/distancematrix/json?&key=AIzaSyAXKftOm_T79p7Scy80I5qxHbSSyo9_snc',
+                                  data: {
+                                    units: 'imperial',
+                                      origins: position.coords.latitude + ", " + position.coords.longitude,
+                                      destinations: data2[i].Address
+                                  },
+                                  error: function() {
+                                   console.log('error');
+                                  },
+                                  dataType: 'json',
+                                  success: function(data) {
+
+                                    var distance = data.rows[0].elements[0].distance.text.split(' ')[0];
+
+                                    map.setCenter({lat: position.coords.latitude, lng: position.coords.longitude});
+                                    map.setZoom(14);
+
+                                    //console.log(data);
+
+                                    var geocoder = platform.getGeocodingService(),
+                                      geocodingParameters = {
+                                        searchText: data.destination_addresses[0],
+                                        jsonattributes : 1
+                                    };
+
+                                    geocoder.geocode(
+                                      geocodingParameters,
+                                      onSuccess1,
+                                      onError1
+                                    );
+
+                                    $.ajax({
+                                      url: 'http://dealsdowntheblock.000webhostapp.com/dealinfo.php',
+                                      error: function(data) {
+                                       console.log(data);
+                                      },
+                                      dataType: 'json',
+                                      success: function(data3) {
+                                        if(pause != true) {
+                                          //pause = true;
+                                          var element = document.getElementById('mainDash');
+                                          //console.log(data3);
+                                          //console.log(element.innerHTML);
+                                          var found = false;
+                                          var index2 = 0;
+                                          for(var j = 0; j < data3.length; j++) {
+                                            for(var k = 0; k < data2.length; k++) {
+                                              if(data3[j].businessid == data2[index].businessid) {
+
+
+                                                var element2 = "<table onclick='openBusiness(" + data2[index].businessid + ")' class='business-row' id='business" + data2[index].businessid +"'><tr><th rowspan='2' style='text-align: left; width: 50px; height: 50px;'><img style='border-radius: 25px;' src='img/" + (index) + ".png' height='50px' width='50px'></img></th><th style='text-align: center;'>" + data2[index].businessname + "</th><th>" + distance + " miles</th><th rowspan='2'></th></tr><tr><td></td><td></td></tr></table>";
+                                                document.getElementById("mainDash").innerHTML = element2 + element.innerHTML;
+                                                found = true;
+                                                j = data3.length;
+                                                k = data2.length;
+
+                                              }
+                                            }
+                                          }
+
+                                          index = index + 1;
+
+                                          // for(var j = 0; j < data3.length; j++) {
+                                          //   if(data3[j].businessid == data2[index].businessid) {
+                                          //     console.log('here');
+                                          // "<div class='rowItem'>"
+                                          // var element2 = "<button class='accordion'>" + data2[index].businessname + "</button><div class='panel'><table><tr><td class='discount'>" + data3[j]["deal description"] + "</td><td class='discount'>" + data3[j + 1]["deal description"] + "</td><td class='discount'>" + data3[j + 2]["deal description"] + "</td></tr></table><p>" + data2[index].Address + "</p><div id='map' style='width:300px; height:300px;'></div></div>"; 
+                                          // document.getElementById("mainDash").innerHTML = element2 + element.innerHTML;
+                                          //     break;
+                                          //   }
+                                          // }
+
+
+                                    //       // var element2 = "<button class='accordion'>" + data2[index].businessname + "</button><div class='panel'><table><tr><td class='discount'>15% off sandwich</td><td class='discount'>15% off sandwich</td><td class='discount'>15% off sandwich</td></tr></table><p>" + data2[index].Address + "</p><div id='map' style='width:300px; height:300px;'></div></div>"; 
+
+                                          //document.getElementById("mainDash").innerHTML = element2 + element.innerHTML;
+                                          var acc = document.getElementsByClassName("accordion");
+                                          var i;
+
+                                          for (i = 0; i < acc.length; i++) {
+                                            acc[i].onclick = function(){
+                                              if(pause == false) {
+                                                pause = true;
+                                              } else {
+                                                pause = false;
+                                              }
+                                              this.classList.toggle("active");
+                                              this.nextElementSibling.classList.toggle("show");
+                                            }
+                                          }
+
+                                    //       var map = L.map('map', {
+                                    //           layers: MQ.mapLayer(),
+                                    //           center: [data.locations[1].latLng.lat, data.locations[1].latLng.lng],
+                                    //           zoom: 12
+                                    //       });
+
+                                    //       // MQ.geocode({ map: map })
+                                    //       //     .search(data.locations[1].latLng.lat+ ", " + data.locations[1].latLng.lng);
+                                    //       index++;
+                                  }
+                                      },
+                                      error: function(data) {
+                                        console.log('here');
+                                      },
+                                      type: 'GET'
+                                    });
+                                  },
+                                  type: 'GET'
+                              });
+                            }
+                        }
+                    },
+                    type: 'GET'
+                });
+            }
+
+            function onError(error) {
+              alert('code: '    + error.code    + '\n' +
+                    'message: ' + error.message + '\n');
+            }
+      </script>
+  </head>
+  <body>
+
+    <div id="header-block">
+
+      <p id="header-title" style="font-family: 'Open Sans'; text-align: center; line-height: 70px; vertical-align: middle;font-weight: 500; color: white;">HOME</p>
+ <div id="wrapper">
+    <div class="overlay"></div>
+
+    <!-- Sidebar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+        <ul class="nav sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="bdash.php">
+                  My Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="bdash.php">Home</a>
+            </li>
+            <li>
+                <a href="#">Edit Profile</a>
+            </li>
+            <li>
+                <a href="#">Team</a>
+            </li>
+            <br>
+            <br>
+            <br>
+            <br>
+            <li>
+                <a href="#">Settings</a>
+            </li>
+            <li>
+                <a href="#">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <button type="button" class="hamburger is-closed" data-toggle="offcanvas">
+            <span class="hamb-top"></span>
+      <span class="hamb-middle"></span>
+    <span class="hamb-bottom"></span>
+        </button>
+    </div>
+    <!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->
+<style>
+body {
+    position: relative;
+    overflow-x: hidden;
+
+      background: #fff;
+    /*background: radial-gradient(#e8e8e8,#66b266);*/
+    border-radius: 6px;
+    height: 120px;
+
+
+}
+body,
+html { height: 100%;}
+.nav .open > a,
+.nav .open > a:hover,
+.nav .open > a:focus {background-color: transparent;}
+
+/*-------------------------------*/
+/*           Wrappers            */
+/*-------------------------------*/
+
+#wrapper {
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+    padding-left: 220px;
+}
+
+#sidebar-wrapper {
+    z-index: 1000;
+    left: 220px;
+    width: 0;
+    height: 100%;
+    margin-left: -220px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #1a1a1a;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#sidebar-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 220px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    padding-top: 70px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -220px;
+}
+
+/*-------------------------------*/
+/*     Sidebar nav styles        */
+/*-------------------------------*/
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 220px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    position: relative;
+    line-height: 20px;
+    display: inline-block;
+    width: 100%;
+}
+
+.sidebar-nav li:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    height: 100%;
+    width: 3px;
+    background-color: #1c1c1c;
+    -webkit-transition: width .2s ease-in;
+      -moz-transition:  width .2s ease-in;
+       -ms-transition:  width .2s ease-in;
+            transition: width .2s ease-in;
+
+}
+.sidebar-nav li:first-child a {
+    color: #fff;
+    background-color: #1a1a1a;
+}
+.sidebar-nav li:nth-child(2):before {
+    background-color: #ec1b5a;
+}
+.sidebar-nav li:nth-child(3):before {
+    background-color: #79aefe;
+}
+.sidebar-nav li:nth-child(4):before {
+    background-color: #314190;
+}
+.sidebar-nav li:nth-child(5):before {
+    background-color: #279636;
+}
+.sidebar-nav li:nth-child(6):before {
+    background-color: #7d5d81;
+}
+.sidebar-nav li:nth-child(7):before {
+    background-color: #ead24c;
+}
+.sidebar-nav li:nth-child(8):before {
+    background-color: #2d2366;
+}
+.sidebar-nav li:nth-child(9):before {
+    background-color: #35acdf;
+}
+.sidebar-nav li:hover:before,
+.sidebar-nav li.open:hover:before {
+    width: 100%;
+    -webkit-transition: width .2s ease-in;
+      -moz-transition:  width .2s ease-in;
+       -ms-transition:  width .2s ease-in;
+            transition: width .2s ease-in;
+
+}
+
+.sidebar-nav li a {
+    display: block;
+    color: #ddd;
+    text-decoration: none;
+    padding: 10px 15px 10px 30px;
+}
+
+.sidebar-nav li a:hover,
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus,
+.sidebar-nav li.open a:hover,
+.sidebar-nav li.open a:active,
+.sidebar-nav li.open a:focus{
+    color: #fff;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 20px;
+    line-height: 44px;
+}
+.sidebar-nav .dropdown-menu {
+    position: relative;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    border: none;
+    background-color: #222;
+    box-shadow: none;
+}
+
+/*-------------------------------*/
+/*       Hamburger-Cross         */
+/*-------------------------------*/
+
+.hamburger {
+  position: fixed;
+  top: 20px;
+  z-index: 999;
+  display: block;
+  width: 32px;
+  height: 32px;
+  margin-left: 0px;
+  background: transparent;
+  border: none;
+}
+.hamburger:hover,
+.hamburger:focus,
+.hamburger:active {
+  outline: none;
+}
+.hamburger.is-closed:before {
+  content: '';
+  display: block;
+  width: 100px;
+  font-size: 14px;
+  color: #fff;
+  line-height: 32px;
+  text-align: center;
+  opacity: 0;
+  -webkit-transform: translate3d(0,0,0);
+  -webkit-transition: all .35s ease-in-out;
+}
+.hamburger.is-closed:hover:before {
+  opacity: 1;
+  display: block;
+  -webkit-transform: translate3d(-100px,0,0);
+  -webkit-transition: all .35s ease-in-out;
+}
+
+.hamburger.is-closed .hamb-top,
+.hamburger.is-closed .hamb-middle,
+.hamburger.is-closed .hamb-bottom,
+.hamburger.is-open .hamb-top,
+.hamburger.is-open .hamb-middle,
+.hamburger.is-open .hamb-bottom {
+  position: absolute;
+  left: 0;
+  height: 4px;
+  width: 100%;
+}
+.hamburger.is-closed .hamb-top,
+.hamburger.is-closed .hamb-middle,
+.hamburger.is-closed .hamb-bottom {
+  background-color: #1a1a1a;
+}
+.hamburger.is-closed .hamb-top {
+  top: 5px;
+  -webkit-transition: all .35s ease-in-out;
+}
+.hamburger.is-closed .hamb-middle {
+  top: 50%;
+  margin-top: -2px;
+}
+.hamburger.is-closed .hamb-bottom {
+  bottom: 5px;
+  -webkit-transition: all .35s ease-in-out;
+}
+
+.hamburger.is-closed:hover .hamb-top {
+  top: 0;
+  -webkit-transition: all .35s ease-in-out;
+}
+.hamburger.is-closed:hover .hamb-bottom {
+  bottom: 0;
+  -webkit-transition: all .35s ease-in-out;
+}
+.hamburger.is-open .hamb-top,
+.hamburger.is-open .hamb-middle,
+.hamburger.is-open .hamb-bottom {
+  background-color: #1a1a1a;
+}
+.hamburger.is-open .hamb-top,
+.hamburger.is-open .hamb-bottom {
+  top: 50%;
+  margin-top: -2px;
+}
+.hamburger.is-open .hamb-top {
+  -webkit-transform: rotate(45deg);
+  -webkit-transition: -webkit-transform .2s cubic-bezier(.73,1,.28,.08);
+}
+.hamburger.is-open .hamb-middle { display: none; }
+.hamburger.is-open .hamb-bottom {
+  -webkit-transform: rotate(-45deg);
+  -webkit-transition: -webkit-transform .2s cubic-bezier(.73,1,.28,.08);
+}
+.hamburger.is-open:before {
+  content: '';
+  display: block;
+  width: 100px;
+  font-size: 14px;
+  color: #fff;
+  line-height: 32px;
+  text-align: center;
+  opacity: 0;
+  -webkit-transform: translate3d(0,0,0);
+  -webkit-transition: all .35s ease-in-out;
+}
+.hamburger.is-open:hover:before {
+  opacity: 1;
+  display: block;
+  -webkit-transform: translate3d(-100px,0,0);
+  -webkit-transition: all .35s ease-in-out;
+}
+
+/*-------------------------------*/
+/*            Overlay            */
+/*-------------------------------*/
+
+.overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(250,250,250,.8);
+    z-index: 1;
+}
+</style>
+<script>
+$(document).ready(function () {
+var trigger = $('.hamburger'),
+    overlay = $('.overlay'),
+   isClosed = false;
+
+  trigger.click(function () {
+    hamburger_cross();
+  });
+
+  function hamburger_cross() {
+
+    if (isClosed == true) {
+      overlay.hide();
+      trigger.removeClass('is-open');
+      trigger.addClass('is-closed');
+      isClosed = false;
+    } else {
+      overlay.show();
+      trigger.removeClass('is-closed');
+      trigger.addClass('is-open');
+      isClosed = true;
+    }
+}
+
+$('[data-toggle="offcanvas"]').click(function () {
+      $('#wrapper').toggleClass('toggled');
+});
+});
+</script>
+    </div>
+    <!--Displays Deals-->
+    <div class="map-div">
+      <div id="map" style="width: 100%; height: 400px; background: grey" />
+    </div>
+    <div id="mainDash">
+    </div>
+  </body>
+</html>
